@@ -1,4 +1,15 @@
 import express from 'express'
+import connectToDatabase from './config/dbConnection.js'
+
+const connection = await connectToDatabase();
+
+connection.on("error", (error) => {
+    console.error(`Erro de conexão: ${error}`)
+})
+
+connection.once("open", () => {
+    console.log("Conexão com o banco de dados realizada com sucesso!")
+})
 
 let livros = [
     {
