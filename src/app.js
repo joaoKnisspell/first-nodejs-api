@@ -1,5 +1,6 @@
 import express from 'express'
 import connectToDatabase from './config/dbConnection.js'
+import routes from './routes/index.js'
 
 const connection = await connectToDatabase();
 
@@ -11,59 +12,47 @@ connection.once("open", () => {
     console.log("Conexão com o banco de dados realizada com sucesso!")
 })
 
-let livros = [
-    {
-        id: 1,
-        name: "Can't Hurt Me: Master Your Mind and Defy the Odds"
-    },
-    {
-        id: 2,
-        name: "The Psychology of Money: Timeless lessons on wealth, greed, and happiness"
-    }
-]
 
+// router.get("/", (req, res) => {
+//     res.status(200).send("Hello World! Minha Primeira API Node.js!")
+// })
+
+// router.get("/livros", (req, res) => {
+//     res.status(200).json(livros)
+// })
+
+// router.get("/livros/:id", (req, res) => {
+//     const bookId = req.params.id
+//     const searchedBook = livros.filter((livro) => livro.id === Number(bookId))
+//     res.status(200).json(searchedBook)
+// })
+
+// router.post("/livros", (req, res) => {
+//     const newBook = req.body
+//     livros.push(newBook)
+//     res.status(201).end("Livro cadastrado com sucesso!")
+// })
+
+// router.put("/livros/:id", (req, res) => {
+//     const bookId = req.params.id
+//     livros = livros.map((livro) => {
+//         if(livro.id === Number(bookId)){
+//             return {
+//                 ...livro,
+//                 name: req.body.name
+//             }
+//         }
+//         return livro
+//     })
+//     res.status(200).json(livros)
+// })
+
+// router.delete("/livros/:id", (req, res) => {
+//     const bookId = Number(req.params.id)
+//     livros = livros.filter((livro) => livro.id !== bookId)
+//     res.status(200).json(livros)
+// })
 const app = express()
-
-app.use(express.json())
-
-app.get("/", (req, res) => {
-    res.status(200).send("Hello World! Minha Primeira API Node.js!")
-})
-
-app.get("/livros", (req, res) => {
-    res.status(200).json(livros)
-})
-
-app.get("/livros/:id", (req, res) => {
-    const bookId = req.params.id
-    const searchedBook = livros.filter((livro) => livro.id === Number(bookId))
-    res.status(200).json(searchedBook)
-})
-
-app.post("/livros", (req, res) => {
-    const newBook = req.body
-    livros.push(newBook)
-    res.status(201).end("Livro cadastrado com sucesso!")
-})
-
-app.put("/livros/:id", (req, res) => {
-    const bookId = req.params.id
-    livros = livros.map((livro) => {
-        if(livro.id === Number(bookId)){
-            return {
-                ...livro,
-                name: req.body.name
-            }
-        }
-        return livro
-    })
-    res.status(200).json(livros)
-})
-
-app.delete("/livros/:id", (req, res) => {
-    const bookId = Number(req.params.id)
-    livros = livros.filter((livro) => livro.id !== bookId)
-    res.status(200).json(livros)
-})
+routes(app)
 
 export default app
